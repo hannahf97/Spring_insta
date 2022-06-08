@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public int createPost(@RequestParam String userId, @RequestParam String img, @RequestParam String name, @RequestParam String password){
+    public Integer createPost(@RequestParam String userId, @RequestParam String img, @RequestParam String name, @RequestParam String password){
         UserDto userDto = new UserDto();
         userDto.setUserId(userId);
         userDto.setImg(img);
