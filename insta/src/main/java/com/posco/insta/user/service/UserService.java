@@ -14,6 +14,6 @@ public interface UserService {
 
     Integer updateUserById(UserDto userDto);
 
-    Boolean findUserByIdAndPassword(UserDto userDto);
+    UserDto login(UserDto userDto);
 
 }
