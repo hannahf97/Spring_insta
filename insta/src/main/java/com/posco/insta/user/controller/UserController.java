@@ -24,7 +24,7 @@ public class UserController {
        return userService.findUserById(userDto);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public int createPost(@RequestParam String userId, @RequestParam String img, @RequestParam String name, @RequestParam String password){
         UserDto userDto = new UserDto();
         userDto.setUserId(userId);
@@ -34,5 +34,15 @@ public class UserController {
 
         return userService.insertUser(userDto);
     }
+
+    @DeleteMapping("/{id}")
+    public Integer deletePost(@PathVariable String id){
+        UserDto userDto = new UserDto();
+        userDto.setId(Integer.parseInt(id));
+        return userService.deleteUser(userDto);
+    }
+
+
+
 
 }

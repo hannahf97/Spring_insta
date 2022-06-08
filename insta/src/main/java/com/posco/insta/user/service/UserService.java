@@ -10,5 +10,6 @@ public interface UserService {
     List<UserDto> findUser();
     UserDto findUserById(UserDto userDto);
     int insertUser(UserDto userDto);
+    Integer deleteUser(UserDto userDto);
 
 }
