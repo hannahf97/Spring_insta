@@ -22,4 +22,9 @@
         INSERT INTO users (userId,img,name,password)
         values (#{userId}, #{img}, #{name}, #{password});
     </insert>
+
+
+    <delete id="deleteUser">
+        DELETE FROM users WHERE id= #{id};
+    </delete>
 </mapper>

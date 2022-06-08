@@ -27,5 +27,10 @@ public class UserServiceImpl implements UserService{
 
     }
 
+    @Override
+    public Integer deleteUser(UserDto userDto){
+        return userMapper.deleteUser(userDto);
+    }
+
 
 }
