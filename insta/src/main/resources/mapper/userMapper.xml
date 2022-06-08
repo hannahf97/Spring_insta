@@ -37,4 +37,13 @@
             </set>
         WHERE id = #{id};
     </update>
+
+    <select id="getUserByUserIdAndPassword" resultType="UserDto">
+        SELECT
+            id, userId, name, img
+        FROM
+            users
+        WHERE
+            userId=#{userId} and password=#{password}
+    </select>
 </mapper>

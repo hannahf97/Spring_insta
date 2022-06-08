@@ -15,4 +15,6 @@ public interface UserMapper {
     Integer deleteUser(UserDto userDto);
 
     Integer updateUserById(UserDto userDto);
+
+    List<UserDto> getUserByUserIdAndPassword(UserDto userDto);
 }

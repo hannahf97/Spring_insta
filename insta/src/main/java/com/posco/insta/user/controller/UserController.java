@@ -50,6 +50,11 @@ public class UserController {
 
     }
 
+    @PostMapping("/login")
+    public Boolean selectUserByIdAndPassword(@RequestBody UserDto userDto){
+        return userService.findUserByIdAndPassword(userDto);
+    }
+
 
 
 
