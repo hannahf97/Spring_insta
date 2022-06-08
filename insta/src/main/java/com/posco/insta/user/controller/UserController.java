@@ -2,6 +2,7 @@ package com.posco.insta.user.controller;
 
 import com.posco.insta.user.model.UserDto;
 import com.posco.insta.user.service.UserServiceImpl;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +41,13 @@ public class UserController {
         UserDto userDto = new UserDto();
         userDto.setId(Integer.parseInt(id));
         return userService.deleteUser(userDto);
+    }
+
+    @PutMapping("/{id}")
+    public Integer updateUserById(@RequestBody UserDto userDto, @PathVariable String id){
+        userDto.setId(Integer.valueOf(id));
+        return userService.updateUserById(userDto);
+
     }
 
 

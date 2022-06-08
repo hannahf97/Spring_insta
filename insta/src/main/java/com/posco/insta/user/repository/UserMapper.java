@@ -13,4 +13,6 @@ public interface UserMapper {
     Integer insertUser(UserDto userDto);
 
     Integer deleteUser(UserDto userDto);
+
+    Integer updateUserById(UserDto userDto);
 }

@@ -12,4 +12,6 @@ public interface UserService {
     Integer insertUser(UserDto userDto);
     Integer deleteUser(UserDto userDto);
 
+    Integer updateUserById(UserDto userDto);
+
 }
