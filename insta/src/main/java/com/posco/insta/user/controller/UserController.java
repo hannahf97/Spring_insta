@@ -68,6 +68,12 @@ public class UserController {
         //return userService.findUserByIdAndPassword(userDto);
     }
 
+    @GetMapping("/token")
+    public String getToken(@RequestParam(value = "token") String token){
+        String subject = securityService.getSubject(token);
+        return subject;
+    }
+
 
 
 

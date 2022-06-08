@@ -1,5 +1,6 @@
 package com.posco.insta.config;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Service;
@@ -21,5 +22,14 @@ public class SecurityService {
         Key signaturekey = new SecretKeySpec(secretKeyBytes, signatureAlgorithm.getJcaName());
         return Jwts.builder().setSubject(subject).signWith(signaturekey).setExpiration(new Date(System.currentTimeMillis()+expTime)).compact();
         //java11부터 builder 사용가능
+    }
+
+    public String getSubject(String token){
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getSubject();
     }
 }
