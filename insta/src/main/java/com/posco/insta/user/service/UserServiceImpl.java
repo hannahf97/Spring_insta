@@ -20,4 +20,12 @@ public class UserServiceImpl implements UserService{
     public UserDto findUserById(UserDto userDto) {
         return userMapper.getUserById(userDto);
     }
+
+    @Override
+    public int insertUser(UserDto userDto) {
+      return userMapper.insertUser(userDto);
+
+    }
+
+
 }

@@ -9,5 +9,6 @@ import java.util.List;
 public interface UserService {
     List<UserDto> findUser();
     UserDto findUserById(UserDto userDto);
+    int insertUser(UserDto userDto);
 
 }

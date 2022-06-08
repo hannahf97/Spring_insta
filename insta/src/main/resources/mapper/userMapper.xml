@@ -17,4 +17,9 @@
         WHERE
             id= #{id}
     </select>
+
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO users (userId,img,name,password)
+        values (#{userId}, #{img}, #{name}, #{password});
+    </insert>
 </mapper>

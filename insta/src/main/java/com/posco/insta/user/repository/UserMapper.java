@@ -9,4 +9,6 @@ import java.util.List;
 public interface UserMapper {
     List<UserDto> getUser();
     UserDto getUserById(UserDto userDto);
+
+    int insertUser(UserDto userDto);
 }
