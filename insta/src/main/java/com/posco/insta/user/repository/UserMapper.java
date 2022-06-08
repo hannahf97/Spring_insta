@@ -10,7 +10,7 @@ public interface UserMapper {
     List<UserDto> getUser();
     UserDto getUserById(UserDto userDto);
 
-    int insertUser(UserDto userDto);
+    Integer insertUser(UserDto userDto);
 
     Integer deleteUser(UserDto userDto);
 }
