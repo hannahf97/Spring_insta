@@ -16,5 +16,5 @@ public interface UserMapper {
 
     Integer updateUserById(UserDto userDto);
 
-    List<UserDto> getUserByUserIdAndPassword(UserDto userDto);
+    UserDto getUserByUserIdAndPassword(UserDto userDto);
 }

@@ -36,8 +36,8 @@ public class UserServiceImpl implements UserService{
     public Integer updateUserById(UserDto userDto){return userMapper.updateUserById(userDto);}
 
     @Override
-    public Boolean findUserByIdAndPassword(UserDto userDto) {
-        return userMapper.getUserByUserIdAndPassword(userDto).size() == 1;
+    public UserDto login(UserDto userDto) {
+        return userMapper.getUserByUserIdAndPassword(userDto);
     }
 
 

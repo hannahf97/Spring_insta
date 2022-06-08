@@ -1,18 +1,24 @@
 package com.posco.insta.user.controller;
 
+import com.posco.insta.config.SecurityService;
 import com.posco.insta.user.model.UserDto;
 import com.posco.insta.user.service.UserServiceImpl;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("user")
 public class UserController {
     @Autowired
     UserServiceImpl userService;
+
+    @Autowired
+    SecurityService securityService;
     @GetMapping("/")
     public List<UserDto> getUser(){
         return userService.findUser();
@@ -51,8 +57,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Boolean selectUserByIdAndPassword(@RequestBody UserDto userDto){
-        return userService.findUserByIdAndPassword(userDto);
+    public Map selectUserByIdAndPassword(@RequestBody UserDto userDto){
+        UserDto loginUser = userService.login(userDto);
+        String token = securityService.createToken(loginUser.getUserId().toString(), 3*24*60*60*1000);
+        Map<String, Object> map = new HashMap<>();
+        map.put("token", token);
+        map.put("name", loginUser.getName());
+        map.put("img", loginUser.getImg());
+        return map;
+        //return userService.findUserByIdAndPassword(userDto);
     }
 
 
