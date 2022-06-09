@@ -17,4 +17,5 @@ public interface UserMapper {
     Integer updateUserById(UserDto userDto);
 
     UserDto getUserByUserIdAndPassword(UserDto userDto);
+
 }
