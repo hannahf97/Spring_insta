@@ -8,4 +8,6 @@ import java.util.List;
 public interface PostService {
     List<PostDto> getPosts();
     List<SelectPostJoinUserDto> getPostByUserId(PostDto postDto);
+
+    Integer deltePostByUserIdAndId(PostDto postDto);
 }

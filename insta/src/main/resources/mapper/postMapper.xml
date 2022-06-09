@@ -25,7 +25,7 @@
         insert into posts(userid, img, content)
         values (#{userid}, #{img}, #{content});
     </insert>
-    <delete id="deltePostById" parameterType="PostDto">
-        delete from posts where userid = #{userid};
+    <delete id="deltePostByUserIdAndId" parameterType="PostDto">
+        delete from posts where id = #{id} and userid = #{userId};
     </delete>
 </mapper>

@@ -10,4 +10,6 @@ import java.util.List;
 public interface PostMapper {
     List<PostDto> getPost();
     List<SelectPostJoinUserDto> getPostByUserId(PostDto postDto);
+
+    Integer deltePostByUserIdAndId(PostDto postDto);
 }
