@@ -4,6 +4,7 @@ import com.posco.insta.aspect.TokenRequired;
 import com.posco.insta.config.SecurityService;
 import com.posco.insta.user.model.UserDto;
 import com.posco.insta.user.service.UserServiceImpl;
+import io.swagger.annotations.Api;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
