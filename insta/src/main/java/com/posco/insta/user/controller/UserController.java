@@ -1,12 +1,18 @@
 package com.posco.insta.user.controller;
 
+import com.posco.insta.aspect.TokenRequired;
 import com.posco.insta.config.SecurityService;
 import com.posco.insta.user.model.UserDto;
 import com.posco.insta.user.service.UserServiceImpl;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,11 +26,13 @@ public class UserController {
     @Autowired
     SecurityService securityService;
     @GetMapping("/")
+    @TokenRequired
     public List<UserDto> getUser(){
         return userService.findUser();
     }
 
     @GetMapping("/{id}")
+    @TokenRequired
     public UserDto getUserById(@PathVariable String id){
         UserDto userDto = new UserDto();
         userDto.setId(Integer.valueOf(id));
@@ -32,26 +40,27 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public Integer createPost(@RequestParam String userId, @RequestParam String img, @RequestParam String name, @RequestParam String password){
-        UserDto userDto = new UserDto();
-        userDto.setUserId(userId);
-        userDto.setImg(img);
-        userDto.setName(name);
-        userDto.setPassword(password);
+    public ResponseEntity<?> createPost(@RequestBody UserDto userDto){
 
-        return userService.insertUser(userDto);
+        HttpStatus httpStatus = userService.insertUser(userDto)==1 ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST;
+
+        return new ResponseEntity<>(httpStatus);
     }
 
-    @DeleteMapping("/{id}")
-    public Integer deletePost(@PathVariable String id){
+    @DeleteMapping("/")
+    @TokenRequired
+    public Integer deletePost(){
+
         UserDto userDto = new UserDto();
-        userDto.setId(Integer.parseInt(id));
+        userDto.setId(securityService.getIdAtToken());
         return userService.deleteUser(userDto);
     }
 
-    @PutMapping("/{id}")
-    public Integer updateUserById(@RequestBody UserDto userDto, @PathVariable String id){
-        userDto.setId(Integer.valueOf(id));
+    @PutMapping("/")
+    @TokenRequired
+    public Integer updateUserById(@RequestBody UserDto userDto){
+
+        userDto.setId(securityService.getIdAtToken());
         return userService.updateUserById(userDto);
 
     }
@@ -59,7 +68,7 @@ public class UserController {
     @PostMapping("/login")
     public Map selectUserByIdAndPassword(@RequestBody UserDto userDto){
         UserDto loginUser = userService.login(userDto);
-        String token = securityService.createToken(loginUser.getUserId().toString(), 3*24*60*60*1000);
+        String token = securityService.createToken(loginUser.getId().toString());
         Map<String, Object> map = new HashMap<>();
         map.put("token", token);
         map.put("name", loginUser.getName());
@@ -67,6 +76,34 @@ public class UserController {
         return map;
         //return userService.findUserByIdAndPassword(userDto);
     }
+
+    @GetMapping("/token")
+    @TokenRequired
+    public String getToken(){
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = requestAttributes.getRequest();
+
+        String tokenBearer = request.getHeader("Authorization");
+        String subject = securityService.getSubject(tokenBearer);
+        return subject;
+    }
+
+    @GetMapping("/me")
+    @TokenRequired
+    public UserDto getUserByMe(){
+        UserDto userDto = new UserDto();
+        userDto.setId(securityService.getIdAtToken());
+        return userService.findUserById(userDto);
+
+    }
+//token 인증하는 방법 header에도 넣고 parameter에도 넣는다
+
+    @TokenRequired
+    @GetMapping("/check")
+    public Boolean check(){
+        return true;
+    }
+
 
 
 

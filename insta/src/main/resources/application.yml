@@ -8,8 +8,13 @@ spring:
     url: jdbc:mysql://localhost:3306/insta?serverTimezone=UTC&amp&characterEncoding=UTF-8
     username: root
     password: 1234
-
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 mybatis:
   config-location: classpath:config/myBatis.xml
 
+jwt:
+  secret_key: 123jh124kjlfkjafdasdfasdflkjkldkajsdkjdfjhasdjflksjdflkjsdlfakjskjklfdjkajdkajdskfjkf
+  expTime: 86400000
 

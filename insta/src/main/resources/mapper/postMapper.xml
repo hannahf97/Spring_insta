@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.posco.insta.post.repository.PostMapper">
+    <select id="getPost" resultType="PostDto">
+        SELECT
+            id, userid, img, content
+        From
+            posts
+    </select>
+    <select id="getPostByUserId" resultType="SelectPostJoinUserDto">
+        SELECT
+            P.id, P.userId, P.img, P.content,
+            U.name as userName, U.img as userImg
+        From
+            posts as P
+        INNER JOIN
+        users as U
+        ON
+            P.userId = U.id
+        where P.userId= #{userId};
+    </select>
+
+    <insert id="insertPost" parameterType="PostDto">
+        insert into posts(userid, img, content)
+        values (#{userid}, #{img}, #{content});
+    </insert>
+    <delete id="deltePostByUserIdAndId" parameterType="PostDto">
+        delete from posts where id = #{id} and userid = #{userId};
+    </delete>
+</mapper>
