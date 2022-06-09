@@ -28,8 +28,14 @@ public class UserController {
         return userService.findUser();
     }
 
-    @GetMapping("/{id}")
-    public UserDto getUserById(@PathVariable String id){
+    @GetMapping("/")
+    @TokenRequired
+    public UserDto getUserById(){
+        ServletRequestAttributes requestAttributes =
+                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = requestAttributes.getRequest();
+        String tokenBearer = request.getHeader("Authorization");
+        String id = securityService.getSubject(tokenBearer);
         UserDto userDto = new UserDto();
         userDto.setId(Integer.valueOf(id));
        return userService.findUserById(userDto);
@@ -46,15 +52,27 @@ public class UserController {
         return userService.insertUser(userDto);
     }
 
-    @DeleteMapping("/{id}")
-    public Integer deletePost(@PathVariable String id){
+    @DeleteMapping("/")
+    @TokenRequired
+    public Integer deletePost(){
+        ServletRequestAttributes requestAttributes =
+                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = requestAttributes.getRequest();
+        String tokenBearer = request.getHeader("Authorization");
+        String id = securityService.getSubject(tokenBearer);
         UserDto userDto = new UserDto();
         userDto.setId(Integer.parseInt(id));
         return userService.deleteUser(userDto);
     }
 
-    @PutMapping("/{id}")
-    public Integer updateUserById(@RequestBody UserDto userDto, @PathVariable String id){
+    @PutMapping("/")
+    @TokenRequired
+    public Integer updateUserById(@RequestBody UserDto userDto){
+        ServletRequestAttributes requestAttributes =
+                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = requestAttributes.getRequest();
+        String tokenBearer = request.getHeader("Authorization");
+        String id = securityService.getSubject(tokenBearer);
         userDto.setId(Integer.valueOf(id));
         return userService.updateUserById(userDto);
 
@@ -63,7 +81,7 @@ public class UserController {
     @PostMapping("/login")
     public Map selectUserByIdAndPassword(@RequestBody UserDto userDto){
         UserDto loginUser = userService.login(userDto);
-        String token = securityService.createToken(loginUser.getUserId().toString());
+        String token = securityService.createToken(loginUser.getId().toString());
         Map<String, Object> map = new HashMap<>();
         map.put("token", token);
         map.put("name", loginUser.getName());
@@ -81,6 +99,20 @@ public class UserController {
         String tokenBearer = request.getHeader("Authorization");
         String subject = securityService.getSubject(tokenBearer);
         return subject;
+    }
+
+    @GetMapping("/me")
+    @TokenRequired
+    public UserDto getUserByMe(){
+        ServletRequestAttributes requestAttributes =
+                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = requestAttributes.getRequest();
+        String tokenBearer = request.getHeader("Authorization");
+        String id = securityService.getSubject(tokenBearer);
+        UserDto userDto = new UserDto();
+        userDto.setId(Integer.valueOf(id));
+        return userDto;
+
     }
 //token 인증하는 방법 header에도 넣고 parameter에도 넣는다
 

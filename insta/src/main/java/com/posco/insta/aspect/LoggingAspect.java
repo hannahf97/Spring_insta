@@ -2,10 +2,8 @@ package com.posco.insta.aspect;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -24,13 +22,13 @@ public class LoggingAspect {
 //        log.info("----- After --------");
 //    }
 
-    @Around("execution(* com.posco.insta.user.service.*.find*(..))")
+    @Around("execution(* com.posco.insta.user.service.*.*(..))")
     public Object loggerAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
         long beforeTimeMillis = System.currentTimeMillis();
         log.info("start: "+ beforeTimeMillis);
         Object result = proceedingJoinPoint.proceed();
         long afterTimeMillis = System.currentTimeMillis();
-        log.info("before : "+ afterTimeMillis + "시간차 : "+ (afterTimeMillis - beforeTimeMillis));
+        log.info("After : "+ afterTimeMillis + "시간차 : "+ (afterTimeMillis - beforeTimeMillis));
         return result;
     }
 }
