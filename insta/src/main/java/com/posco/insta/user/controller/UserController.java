@@ -24,18 +24,14 @@ public class UserController {
     @Autowired
     SecurityService securityService;
     @GetMapping("/")
+    @TokenRequired
     public List<UserDto> getUser(){
         return userService.findUser();
     }
 
-    @GetMapping("/")
+    @GetMapping("/{id}")
     @TokenRequired
-    public UserDto getUserById(){
-        ServletRequestAttributes requestAttributes =
-                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpServletRequest request = requestAttributes.getRequest();
-        String tokenBearer = request.getHeader("Authorization");
-        String id = securityService.getSubject(tokenBearer);
+    public UserDto getUserById(@PathVariable String id){
         UserDto userDto = new UserDto();
         userDto.setId(Integer.valueOf(id));
        return userService.findUserById(userDto);
