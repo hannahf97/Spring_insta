@@ -15,7 +15,8 @@ public class SwaggerConfig {
     public Docket api(){
         return new Docket(DocumentationType.OAS_30)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.posco.insta.user.controller"))
+                //.apis(RequestHandlerSelectors.basePackage("com.posco.insta.user.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.posco.insta"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());
