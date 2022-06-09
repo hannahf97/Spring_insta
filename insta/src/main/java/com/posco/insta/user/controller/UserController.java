@@ -6,6 +6,8 @@ import com.posco.insta.user.model.UserDto;
 import com.posco.insta.user.service.UserServiceImpl;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -38,38 +40,27 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public Integer createPost(@RequestParam String userId, @RequestParam String img, @RequestParam String name, @RequestParam String password){
-        UserDto userDto = new UserDto();
-        userDto.setUserId(userId);
-        userDto.setImg(img);
-        userDto.setName(name);
-        userDto.setPassword(password);
+    public ResponseEntity<?> createPost(@RequestBody UserDto userDto){
 
-        return userService.insertUser(userDto);
+        HttpStatus httpStatus = userService.insertUser(userDto)==1 ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST;
+
+        return new ResponseEntity<>(httpStatus);
     }
 
     @DeleteMapping("/")
     @TokenRequired
     public Integer deletePost(){
-        ServletRequestAttributes requestAttributes =
-                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpServletRequest request = requestAttributes.getRequest();
-        String tokenBearer = request.getHeader("Authorization");
-        String id = securityService.getSubject(tokenBearer);
+
         UserDto userDto = new UserDto();
-        userDto.setId(Integer.parseInt(id));
+        userDto.setId(securityService.getIdAtToken());
         return userService.deleteUser(userDto);
     }
 
     @PutMapping("/")
     @TokenRequired
     public Integer updateUserById(@RequestBody UserDto userDto){
-        ServletRequestAttributes requestAttributes =
-                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpServletRequest request = requestAttributes.getRequest();
-        String tokenBearer = request.getHeader("Authorization");
-        String id = securityService.getSubject(tokenBearer);
-        userDto.setId(Integer.valueOf(id));
+
+        userDto.setId(securityService.getIdAtToken());
         return userService.updateUserById(userDto);
 
     }
@@ -100,23 +91,19 @@ public class UserController {
     @GetMapping("/me")
     @TokenRequired
     public UserDto getUserByMe(){
-        ServletRequestAttributes requestAttributes =
-                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpServletRequest request = requestAttributes.getRequest();
-        String tokenBearer = request.getHeader("Authorization");
-        String id = securityService.getSubject(tokenBearer);
         UserDto userDto = new UserDto();
-        userDto.setId(Integer.valueOf(id));
-        return userDto;
+        userDto.setId(securityService.getIdAtToken());
+        return userService.findUserById(userDto);
 
     }
 //token 인증하는 방법 header에도 넣고 parameter에도 넣는다
 
-//    @GetMapping("/me")
-//    @TokenRequired
-//    public UserDto getUserByMe(){
-//        UserDto user
-//    }
+    @TokenRequired
+    @GetMapping("/check")
+    public Boolean check(){
+        return true;
+    }
+
 
 
 
