@@ -12,4 +12,6 @@ spring:
 mybatis:
   config-location: classpath:config/myBatis.xml
 
-
+jwt:
+  secret_key: 123jh124kjlfkjafdasdfasdflkjkldkajsdkjdfjhasdjflksjdflkjsdlfakjskjklfdjkajdkajdskfjkf
+  expTime: 86400000

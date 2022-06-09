@@ -1,12 +1,16 @@
 package com.posco.insta.user.controller;
 
+import com.posco.insta.aspect.TokenRequired;
 import com.posco.insta.config.SecurityService;
 import com.posco.insta.user.model.UserDto;
 import com.posco.insta.user.service.UserServiceImpl;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +63,7 @@ public class UserController {
     @PostMapping("/login")
     public Map selectUserByIdAndPassword(@RequestBody UserDto userDto){
         UserDto loginUser = userService.login(userDto);
-        String token = securityService.createToken(loginUser.getUserId().toString(), 3*24*60*60*1000);
+        String token = securityService.createToken(loginUser.getUserId().toString());
         Map<String, Object> map = new HashMap<>();
         map.put("token", token);
         map.put("name", loginUser.getName());
@@ -69,10 +73,22 @@ public class UserController {
     }
 
     @GetMapping("/token")
-    public String getToken(@RequestParam(value = "token") String token){
-        String subject = securityService.getSubject(token);
+    @TokenRequired
+    public String getToken(){
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = requestAttributes.getRequest();
+
+        String tokenBearer = request.getHeader("Authorization");
+        String subject = securityService.getSubject(tokenBearer);
         return subject;
     }
+//token 인증하는 방법 header에도 넣고 parameter에도 넣는다
+
+//    @GetMapping("/me")
+//    @TokenRequired
+//    public UserDto getUserByMe(){
+//        UserDto user
+//    }
 
 
 
