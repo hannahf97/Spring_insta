@@ -43,6 +43,41 @@
     </select>
 
     <update id="updateMyPost" parameterType="PostDto">
-        UPDATE posts SET img = #{img}, content=#{content} where id = #{id};
+        UPDATE posts
+            <set>
+            <if test="content!=null">content=#{content},</if>
+            <if test="img!=null">img = #{img},</if>
+            </set>
+             where id = #{id} and userid = #{userId};
     </update>
+
+    <select id="getPostsById" resultType="SelectPostJoinUserDto" parameterType="PostDto">
+        SELECT
+            p.id, p.userId, p.img, p.content,
+            u.name as userName, u.img as userImg
+        FROM
+            posts as p
+        INNER JOIN user as u
+        ON u.id =p.userId
+        WHERE id= #{id}
+    </select>
+
+
+    <select id="findPostBykey" resultType="SelectPostJoinUserDto" parameterType="String">
+        SELECT
+            p.id, p.userId, p.img, p.content,
+            u.name as userName, u.img as userImg
+        FROM
+            posts as p
+        INNER JOIN users as u  ON p.userId = u.id where p.content like concat('%', #{key}, '%');
+    </select>
+
+    <select id="findFollowGetPost" parameterType="PostDto" resultType="SelectPostJoinUserDto">
+        select p.id, p.userId, p.img, p.content, u.name, u.img
+        from
+            posts AS p
+                INNER JOIN users AS u on p.userId = u.id
+                INNER JOIN follows as f on p.userId = f.following
+        where f.follower = #{userId};
+    </select>
 </mapper>

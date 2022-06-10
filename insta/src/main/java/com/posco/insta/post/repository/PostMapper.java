@@ -18,4 +18,10 @@ public interface PostMapper {
     Integer insertPost(PostDto postDto);
 
     Integer updateMyPost(PostDto postDto);
+
+    SelectPostJoinUserDto getPostById(PostDto postDto);
+
+    List<SelectPostJoinUserDto> findPostBykey(String key);
+
+    List<SelectPostJoinUserDto> findFollowGetPost(PostDto postDto);
 }

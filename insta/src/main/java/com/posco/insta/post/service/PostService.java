@@ -16,4 +16,10 @@ public interface PostService {
     Integer insertPost(PostDto postDto);
 
     Integer updatePost(PostDto postDto);
+
+    SelectPostJoinUserDto getPostOneById(PostDto postDto);
+
+    List<SelectPostJoinUserDto> findPostsLikeKey(String key);
+
+    List<SelectPostJoinUserDto> findFollowGetPost(PostDto postDto);
 }
