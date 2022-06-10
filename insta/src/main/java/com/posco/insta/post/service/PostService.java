@@ -10,4 +10,10 @@ public interface PostService {
     List<SelectPostJoinUserDto> getPostByUserId(PostDto postDto);
 
     Integer deltePostByUserIdAndId(PostDto postDto);
+
+    List<SelectPostJoinUserDto> getOtherPostByUserId(PostDto postDto);
+
+    Integer insertPost(PostDto postDto);
+
+    Integer updatePost(PostDto postDto);
 }

@@ -23,9 +23,26 @@
 
     <insert id="insertPost" parameterType="PostDto">
         insert into posts(userid, img, content)
-        values (#{userid}, #{img}, #{content});
+        values (#{userId}, #{img}, #{content});
     </insert>
     <delete id="deltePostByUserIdAndId" parameterType="PostDto">
         delete from posts where id = #{id} and userid = #{userId};
     </delete>
+
+    <select id="getOtherPostByUserId" resultType="SelectPostJoinUserDto">
+        SELECT
+            P.id, P.userId, P.img, P.content,
+            U.name as userName, U.img as userImg
+        From
+            posts as P
+                INNER JOIN
+            users as U
+            ON
+                P.userId = U.id
+        where P.userId != #{userId};
+    </select>
+
+    <update id="updateMyPost" parameterType="PostDto">
+        UPDATE posts SET img = #{img}, content=#{content} where id = #{id};
+    </update>
 </mapper>

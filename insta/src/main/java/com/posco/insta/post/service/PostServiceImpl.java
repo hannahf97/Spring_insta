@@ -27,4 +27,21 @@ public class PostServiceImpl implements PostService{
     public Integer deltePostByUserIdAndId(PostDto postDto){
         return postMapper.deltePostByUserIdAndId(postDto);
     }
+
+    @Override
+    public List<SelectPostJoinUserDto> getOtherPostByUserId(PostDto postDto) {
+        return postMapper.getOtherPostByUserId(postDto);
+    }
+
+    @Override
+    public Integer insertPost(PostDto postDto) {
+        return postMapper.insertPost(postDto);
+    }
+
+    @Override
+    public Integer updatePost(PostDto postDto) {
+        return postMapper.updateMyPost(postDto);
+    }
+
+
 }

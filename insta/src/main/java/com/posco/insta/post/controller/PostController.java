@@ -34,10 +34,32 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
+    @TokenRequired
     public Integer deleteMyPost(@PathVariable String id){
         PostDto postDto = new PostDto();
         postDto.setId(Integer.valueOf(id));
         postDto.setUserId(String.valueOf(securityService.getIdAtToken()));
         return postService.deltePostByUserIdAndId(postDto);
+    }
+
+    @GetMapping("/other")
+    @TokenRequired
+    public List<SelectPostJoinUserDto> getOtherPostById(){
+        PostDto postDto = new PostDto();
+        postDto.setUserId(String.valueOf(securityService.getIdAtToken()));
+        return postService.getOtherPostByUserId(postDto);
+    }
+
+    @PutMapping("/{id}")
+    public Integer updateMyPost(@RequestBody PostDto postDto, @PathVariable String id){
+        postDto.setUserId(String.valueOf(securityService.getIdAtToken()));
+        postDto.setId(Integer.valueOf(id));
+        return postService.updatePost(postDto); 
+    }
+
+    @PostMapping("/")
+    public Integer postPost(@RequestBody PostDto postDto){
+        postDto.setUserId(String.valueOf(securityService.getIdAtToken()));
+        return postService.insertPost(postDto);
     }
 }
